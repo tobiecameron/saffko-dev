@@ -118,8 +118,8 @@ export default async function Home() {
         </div>
       )}
 
-      {/* Content */}
-      <div className="relative z-10 flex min-h-screen w-full flex-col items-center justify-center bg-black/20">
+      {/* Content - removed bg-black/20 that was covering the background */}
+      <div className="relative z-10 flex min-h-screen w-full flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center logo-container">
           {/* Logo */}
           {renderLogo()}
