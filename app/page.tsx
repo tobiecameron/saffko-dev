@@ -6,7 +6,6 @@ import Image from "next/image"
 import DebugInfo from "@/components/debug-info"
 import HomeContent from "@/components/home-content"
 import FeaturedContent from "@/components/featured-content"
-import Link from "next/link"
 
 export default async function Home() {
   const [siteSettings, homePageContent, featuredWorkItems] = await Promise.all([
@@ -91,16 +90,6 @@ export default async function Home() {
             {siteSettings.logoText}
           </div>
         )}
-      </div>
-
-      {/* Navigation Links */}
-      <div className="mt-8 flex gap-6">
-        <Link href="/blog" className="text-white hover:text-gray-300 transition-colors">
-          Blog
-        </Link>
-        <Link href="/work" className="text-white hover:text-gray-300 transition-colors">
-          Work
-        </Link>
       </div>
 
       {/* Home Page Content */}
