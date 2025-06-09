@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "saffko",
   description: "design and engagement solutions",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://blokhouse.xyz"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://saffko.com"),
   openGraph: {
     title: "saffko",
     description: "design and engagement solutions",
