@@ -12,6 +12,7 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  transpilePackages: ["@sanity/ui", "@sanity/visual-editing"],
 }
 
 module.exports = nextConfig
