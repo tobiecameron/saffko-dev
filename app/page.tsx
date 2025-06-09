@@ -1,3 +1,4 @@
+// page.tsx
 export const revalidate = 60 // Revalidate at most once per minute
 
 import { getSiteSettings, getHomePageContent, getFeaturedWorkItems } from "@/lib/sanity"
