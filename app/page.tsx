@@ -69,23 +69,52 @@ export default async function Home() {
     return <Image src="/logo.png" alt="Logo" width={180} height={37} priority />
   }
 
+  // Generate overlay classes based on CMS settings
+  const generateOverlayClasses = (backgroundImage: any) => {
+    if (!backgroundImage || backgroundImage.overlayType === "none") {
+      return ""
+    }
+
+    const opacity = Math.round(((backgroundImage.overlayOpacity || 20) / 100) * 20) * 5 // Convert to Tailwind opacity scale
+    const color = backgroundImage.overlayColor || "black"
+
+    if (backgroundImage.overlayType === "gradient") {
+      const direction = backgroundImage.gradientDirection || "to-b"
+      const startOpacity = Math.round(((backgroundImage.gradientStartOpacity || 30) / 100) * 20) * 5
+      const endOpacity = Math.round(((backgroundImage.gradientEndOpacity || 60) / 100) * 20) * 5
+
+      return `bg-gradient-${direction} from-${color}/${startOpacity} to-${color}/${endOpacity}`
+    }
+
+    return `bg-${color}/${opacity}`
+  }
+
+  // Generate image opacity class
+  const generateImageOpacity = (backgroundImage: any) => {
+    const opacity = backgroundImage?.imageOpacity || 95
+    return `opacity-${opacity}`
+  }
+
+  const overlayClasses = generateOverlayClasses(homePageContent?.backgroundImage)
+  const imageOpacityClass = generateImageOpacity(homePageContent?.backgroundImage)
+
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center center-container">
       {/* Background Image */}
-      {homePageContent?.backgroundImage?.asset?.url && (
+      {homePageContent?.backgroundImage?.image?.asset?.url && (
         <div className="absolute inset-0 z-0">
           <Image
-            src={homePageContent.backgroundImage.asset.url || "/placeholder.svg"}
-            alt={homePageContent.backgroundImage.alt || "Background"}
+            src={homePageContent.backgroundImage.image.asset.url || "/placeholder.svg"}
+            alt={homePageContent.backgroundImage.image.alt || "Background"}
             fill
             style={{
               objectFit: "cover",
             }}
             priority
-            className="opacity-95"
+            className={imageOpacityClass}
           />
-          {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/20" />
+          {/* Configurable overlay */}
+          {overlayClasses && <div className={`absolute inset-0 ${overlayClasses}`} />}
         </div>
       )}
 

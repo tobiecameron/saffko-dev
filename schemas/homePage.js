@@ -10,19 +10,144 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      name: "backgroundImage",
-      title: "Background Image",
-      type: "image",
-      description: "Full-width background image for the home page",
-      options: {
-        hotspot: true,
-      },
+      name: "seo",
+      title: "SEO",
+      type: "object",
       fields: [
         {
-          name: "alt",
+          name: "metaTitle",
+          title: "Meta Title",
           type: "string",
-          title: "Alternative Text",
-          description: "Important for SEO and accessibility.",
+          description: "Title that appears in search engines and browser tabs",
+          validation: (Rule) => Rule.max(60).warning("Keep it under 60 characters for better SEO"),
+        },
+        {
+          name: "metaDescription",
+          title: "Meta Description",
+          type: "text",
+          description: "Description that appears in search engine results",
+          validation: (Rule) => Rule.max(160).warning("Keep it under 160 characters for better SEO"),
+        },
+        {
+          name: "openGraphImage",
+          title: "Open Graph Image",
+          type: "image",
+          description: "Image that appears when sharing on social media",
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: "alt",
+              type: "string",
+              title: "Alternative Text",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "backgroundImage",
+      title: "Background Image",
+      type: "object",
+      fields: [
+        {
+          name: "image",
+          title: "Background Image",
+          type: "image",
+          description: "Full-width background image for the home page",
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: "alt",
+              type: "string",
+              title: "Alternative Text",
+              description: "Important for SEO and accessibility.",
+            },
+          ],
+        },
+        {
+          name: "overlayType",
+          title: "Overlay Type",
+          type: "string",
+          options: {
+            list: [
+              { title: "None", value: "none" },
+              { title: "Solid Color", value: "solid" },
+              { title: "Gradient", value: "gradient" },
+            ],
+          },
+          initialValue: "solid",
+        },
+        {
+          name: "overlayColor",
+          title: "Overlay Color",
+          type: "string",
+          options: {
+            list: [
+              { title: "Black", value: "black" },
+              { title: "White", value: "white" },
+              { title: "Blue", value: "blue-900" },
+              { title: "Gray", value: "gray-900" },
+              { title: "Amber", value: "amber-900" },
+            ],
+          },
+          initialValue: "black",
+          hidden: ({ parent }) => parent?.overlayType === "none",
+        },
+        {
+          name: "overlayOpacity",
+          title: "Overlay Opacity",
+          type: "number",
+          description: "Overlay opacity from 0 (transparent) to 100 (opaque)",
+          validation: (Rule) => Rule.min(0).max(100),
+          initialValue: 20,
+          hidden: ({ parent }) => parent?.overlayType === "none",
+        },
+        {
+          name: "gradientDirection",
+          title: "Gradient Direction",
+          type: "string",
+          options: {
+            list: [
+              { title: "Top to Bottom", value: "to-b" },
+              { title: "Bottom to Top", value: "to-t" },
+              { title: "Left to Right", value: "to-r" },
+              { title: "Right to Left", value: "to-l" },
+              { title: "Top-Left to Bottom-Right", value: "to-br" },
+              { title: "Top-Right to Bottom-Left", value: "to-bl" },
+            ],
+          },
+          initialValue: "to-b",
+          hidden: ({ parent }) => parent?.overlayType !== "gradient",
+        },
+        {
+          name: "gradientStartOpacity",
+          title: "Gradient Start Opacity",
+          type: "number",
+          description: "Starting opacity for gradient (0-100)",
+          validation: (Rule) => Rule.min(0).max(100),
+          initialValue: 30,
+          hidden: ({ parent }) => parent?.overlayType !== "gradient",
+        },
+        {
+          name: "gradientEndOpacity",
+          title: "Gradient End Opacity",
+          type: "number",
+          description: "Ending opacity for gradient (0-100)",
+          validation: (Rule) => Rule.min(0).max(100),
+          initialValue: 60,
+          hidden: ({ parent }) => parent?.overlayType !== "gradient",
+        },
+        {
+          name: "imageOpacity",
+          title: "Background Image Opacity",
+          type: "number",
+          description: "Background image opacity from 0 (invisible) to 100 (fully visible)",
+          validation: (Rule) => Rule.min(0).max(100),
+          initialValue: 95,
         },
       ],
     },
@@ -192,6 +317,14 @@ export default {
   preview: {
     select: {
       title: "title",
+      subtitle: "seo.metaTitle",
+    },
+    prepare(selection) {
+      const { title, subtitle } = selection
+      return {
+        title: title,
+        subtitle: subtitle ? `SEO: ${subtitle}` : "No SEO title set",
+      }
     },
   },
 }
