@@ -71,7 +71,7 @@
     "sass": "latest",
     "sass-embedded": "latest",
     "sonner": "^1.7.1",
-    "styled-components": "latest",
+    "styled-components": "^5.3.11",
     "stylus": "latest",
     "sugarss": "latest",
     "tailwind-merge": "^2.5.5",
