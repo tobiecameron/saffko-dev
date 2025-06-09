@@ -70,45 +70,66 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-black center-container">
-      <div className="flex flex-col items-center justify-center logo-container">
-        {/* Logo */}
-        {renderLogo()}
-
-        {/* Logo Text - Only render if not empty */}
-        {siteSettings?.logoText && siteSettings.logoText.trim() !== "" && (
-          <div
-            className="mt-[30px] font-mono text-[0.85rem] text-white logo-text"
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center center-container">
+      {/* Background Image */}
+      {homePageContent?.backgroundImage?.asset?.url && (
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={homePageContent.backgroundImage.asset.url || "/placeholder.svg"}
+            alt={homePageContent.backgroundImage.alt || "Background"}
+            fill
             style={{
-              marginTop: "30px",
-              fontFamily: "monospace",
-              fontSize: "0.85rem",
-              color: "white",
+              objectFit: "cover",
             }}
-          >
-            {siteSettings.logoText}
-          </div>
+            priority
+            className="opacity-90"
+          />
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+      )}
+
+      {/* Content */}
+      <div className="relative z-10 flex min-h-screen w-full flex-col items-center justify-center bg-black/20">
+        <div className="flex flex-col items-center justify-center logo-container">
+          {/* Logo */}
+          {renderLogo()}
+
+          {/* Logo Text - Only render if not empty */}
+          {siteSettings?.logoText && siteSettings.logoText.trim() !== "" && (
+            <div
+              className="mt-[30px] font-mono text-[0.85rem] text-white logo-text drop-shadow-lg"
+              style={{
+                marginTop: "30px",
+                fontFamily: "monospace",
+                fontSize: "0.85rem",
+                color: "white",
+              }}
+            >
+              {siteSettings.logoText}
+            </div>
+          )}
+        </div>
+
+        {/* Home Page Content */}
+        <div className="mt-12 px-4 w-full max-w-6xl">
+          <HomeContent content={homePageContent} />
+        </div>
+
+        {/* Featured Work */}
+        {featuredItems.length > 0 && <FeaturedContent items={featuredItems} />}
+
+        <div className="email-container">
+          <a href="mailto:angus@ipmc.com.au" className="email-link drop-shadow-lg">
+            email us
+          </a>
+        </div>
+
+        {/* Debug component - only visible in development */}
+        {process.env.NODE_ENV !== "production" && (
+          <DebugInfo data={{ siteSettings, homePageContent, featuredWorkItems }} />
         )}
       </div>
-
-      {/* Home Page Content */}
-      <div className="mt-12 px-4 w-full max-w-6xl">
-        <HomeContent content={homePageContent} />
-      </div>
-
-      {/* Featured Work */}
-      {featuredItems.length > 0 && <FeaturedContent items={featuredItems} />}
-
-      <div className="email-container">
-        <a href="mailto:angus@ipmc.com.au" className="email-link">
-          email us
-        </a>
-      </div>
-
-      {/* Debug component - only visible in development */}
-      {process.env.NODE_ENV !== "production" && (
-        <DebugInfo data={{ siteSettings, homePageContent, featuredWorkItems }} />
-      )}
     </div>
   )
 }

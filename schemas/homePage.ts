@@ -1,16 +1,34 @@
-export default {
+import { defineType, defineField } from "sanity"
+
+export default defineType({
   name: "homePage",
   title: "Home Page",
   type: "document",
   fields: [
-    {
+    defineField({
       name: "title",
       title: "Page Title",
       type: "string",
-      description: "Internal title for this page (not displayed on site)",
-      initialValue: "Home Page",
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "backgroundImage",
+      title: "Background Image",
+      type: "image",
+      description: "Full-width background image for the home page",
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: "alt",
+          type: "string",
+          title: "Alternative Text",
+          description: "Important for SEO and accessibility.",
+        },
+      ],
+    }),
+    defineField({
       name: "heroSection",
       title: "Hero Section",
       type: "object",
@@ -19,18 +37,15 @@ export default {
           name: "subtitle",
           title: "Subtitle",
           type: "string",
-          description: "Text to display below the logo",
         },
         {
           name: "description",
           title: "Description",
           type: "text",
-          rows: 3,
-          description: "Additional description text",
         },
       ],
-    },
-    {
+    }),
+    defineField({
       name: "contentSections",
       title: "Content Sections",
       type: "array",
@@ -49,37 +64,7 @@ export default {
               name: "content",
               title: "Content",
               type: "array",
-              of: [
-                {
-                  type: "block",
-                  styles: [
-                    { title: "Normal", value: "normal" },
-                    { title: "H2", value: "h2" },
-                    { title: "H3", value: "h3" },
-                    { title: "Quote", value: "blockquote" },
-                  ],
-                  marks: {
-                    decorators: [
-                      { title: "Strong", value: "strong" },
-                      { title: "Emphasis", value: "em" },
-                    ],
-                    annotations: [
-                      {
-                        title: "URL",
-                        name: "link",
-                        type: "object",
-                        fields: [
-                          {
-                            title: "URL",
-                            name: "href",
-                            type: "url",
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                },
-              ],
+              of: [{ type: "block" }],
             },
             {
               name: "backgroundColor",
@@ -89,7 +74,7 @@ export default {
                 list: [
                   { title: "Transparent", value: "transparent" },
                   { title: "Black", value: "black" },
-                  { title: "Dark Gray", value: "gray-900" },
+                  { title: "Gray 900", value: "gray-900" },
                   { title: "White", value: "white" },
                 ],
               },
@@ -103,31 +88,12 @@ export default {
                 list: [
                   { title: "White", value: "white" },
                   { title: "Black", value: "black" },
-                  { title: "Gray", value: "gray-400" },
+                  { title: "Gray 400", value: "gray-400" },
                 ],
               },
               initialValue: "white",
             },
           ],
-          preview: {
-            select: {
-              title: "heading",
-              content: "content",
-            },
-            prepare({ title, content }) {
-              const block = (content || []).find((block: any) => block._type === "block")
-              return {
-                title: title || "Text Section",
-                subtitle: block
-                  ? block.children
-                      ?.filter((child: any) => child._type === "span")
-                      ?.map((span: any) => span.text)
-                      ?.join("")
-                      ?.substring(0, 100) + "..."
-                  : "No content",
-              }
-            },
-          },
         },
         {
           type: "object",
@@ -144,9 +110,8 @@ export default {
               fields: [
                 {
                   name: "alt",
-                  title: "Alt Text",
                   type: "string",
-                  description: "Important for SEO and accessibility",
+                  title: "Alternative Text",
                 },
               ],
             },
@@ -157,7 +122,7 @@ export default {
             },
             {
               name: "size",
-              title: "Image Size",
+              title: "Size",
               type: "string",
               options: {
                 list: [
@@ -170,23 +135,11 @@ export default {
               initialValue: "medium",
             },
           ],
-          preview: {
-            select: {
-              media: "image",
-              title: "caption",
-            },
-            prepare({ media, title }) {
-              return {
-                title: title || "Image Section",
-                media,
-              }
-            },
-          },
         },
         {
           type: "object",
           name: "ctaSection",
-          title: "Call to Action",
+          title: "Call to Action Section",
           fields: [
             {
               name: "heading",
@@ -197,7 +150,6 @@ export default {
               name: "description",
               title: "Description",
               type: "text",
-              rows: 2,
             },
             {
               name: "buttons",
@@ -235,47 +187,13 @@ export default {
               ],
             },
           ],
-          preview: {
-            select: {
-              title: "heading",
-              description: "description",
-            },
-            prepare({ title, description }) {
-              return {
-                title: title || "Call to Action",
-                subtitle: description,
-              }
-            },
-          },
         },
       ],
-    },
-    {
-      name: "seo",
-      title: "SEO Settings",
-      type: "object",
-      fields: [
-        {
-          name: "metaTitle",
-          title: "Meta Title",
-          type: "string",
-          description: "Title for search engines (leave empty to use site title)",
-        },
-        {
-          name: "metaDescription",
-          title: "Meta Description",
-          type: "text",
-          rows: 2,
-          description: "Description for search engines",
-        },
-      ],
-    },
+    }),
   ],
   preview: {
-    prepare() {
-      return {
-        title: "Home Page",
-      }
+    select: {
+      title: "title",
     },
   },
-}
+})
