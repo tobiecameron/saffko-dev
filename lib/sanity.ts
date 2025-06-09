@@ -200,6 +200,15 @@ export async function getHomePageContent() {
           },
           alt
         },
+        backgroundOverlay {
+          overlayType,
+          overlayColor,
+          overlayOpacity,
+          gradientDirection,
+          gradientStartOpacity,
+          gradientEndOpacity,
+          imageOpacity
+        },
         heroSection,
         contentSections[] {
           _type,

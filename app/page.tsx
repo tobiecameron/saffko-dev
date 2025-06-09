@@ -70,18 +70,18 @@ export default async function Home() {
   }
 
   // Generate overlay classes based on CMS settings
-  const generateOverlayClasses = (backgroundImage: any) => {
-    if (!backgroundImage || backgroundImage.overlayType === "none") {
+  const generateOverlayClasses = (overlaySettings: any) => {
+    if (!overlaySettings || overlaySettings.overlayType === "none") {
       return ""
     }
 
-    const opacity = backgroundImage.overlayOpacity || 20
-    const color = backgroundImage.overlayColor || "black"
+    const opacity = overlaySettings.overlayOpacity || 20
+    const color = overlaySettings.overlayColor || "black"
 
-    if (backgroundImage.overlayType === "gradient") {
-      const direction = backgroundImage.gradientDirection || "to-b"
-      const startOpacity = backgroundImage.gradientStartOpacity || 30
-      const endOpacity = backgroundImage.gradientEndOpacity || 60
+    if (overlaySettings.overlayType === "gradient") {
+      const direction = overlaySettings.gradientDirection || "to-b"
+      const startOpacity = overlaySettings.gradientStartOpacity || 30
+      const endOpacity = overlaySettings.gradientEndOpacity || 60
 
       return `bg-gradient-${direction} from-${color}/${startOpacity} to-${color}/${endOpacity}`
     }
@@ -89,49 +89,23 @@ export default async function Home() {
     return `bg-${color}/${opacity}`
   }
 
-  // Generate image opacity class - using inline styles for more reliable opacity control
-  const generateImageOpacity = (backgroundImage: any) => {
-    const opacity = (backgroundImage?.imageOpacity || 95) / 100
+  // Generate image opacity
+  const generateImageOpacity = (overlaySettings: any) => {
+    const opacity = (overlaySettings?.imageOpacity || 95) / 100
     return opacity
   }
 
-  const overlayClasses = generateOverlayClasses(homePageContent?.backgroundImage)
-  const imageOpacity = generateImageOpacity(homePageContent?.backgroundImage)
-
-  // Get background image URL - handle both old and new structure
-  const getBackgroundImageUrl = () => {
-    const bgImage = homePageContent?.backgroundImage
-    if (!bgImage) return null
-
-    // New structure (object with image field)
-    if (bgImage.image?.asset?.url) {
-      return {
-        url: bgImage.image.asset.url,
-        alt: bgImage.image.alt || "Background",
-      }
-    }
-
-    // Old structure (direct image)
-    if (bgImage.asset?.url) {
-      return {
-        url: bgImage.asset.url,
-        alt: bgImage.alt || "Background",
-      }
-    }
-
-    return null
-  }
-
-  const backgroundImageData = getBackgroundImageUrl()
+  const overlayClasses = generateOverlayClasses(homePageContent?.backgroundOverlay)
+  const imageOpacity = generateImageOpacity(homePageContent?.backgroundOverlay)
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center center-container">
       {/* Background Image */}
-      {backgroundImageData && (
+      {homePageContent?.backgroundImage?.asset?.url && (
         <div className="absolute inset-0 z-0">
           <Image
-            src={backgroundImageData.url || "/placeholder.svg"}
-            alt={backgroundImageData.alt}
+            src={homePageContent.backgroundImage.asset.url || "/placeholder.svg"}
+            alt={homePageContent.backgroundImage.alt || "Background"}
             fill
             style={{
               objectFit: "cover",

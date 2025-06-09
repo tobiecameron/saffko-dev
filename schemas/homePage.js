@@ -49,25 +49,25 @@ export default {
     {
       name: "backgroundImage",
       title: "Background Image",
-      type: "object",
+      type: "image",
+      description: "Full-width background image for the home page",
+      options: {
+        hotspot: true,
+      },
       fields: [
         {
-          name: "image",
-          title: "Background Image",
-          type: "image",
-          description: "Full-width background image for the home page",
-          options: {
-            hotspot: true,
-          },
-          fields: [
-            {
-              name: "alt",
-              type: "string",
-              title: "Alternative Text",
-              description: "Important for SEO and accessibility.",
-            },
-          ],
+          name: "alt",
+          type: "string",
+          title: "Alternative Text",
+          description: "Important for SEO and accessibility.",
         },
+      ],
+    },
+    {
+      name: "backgroundOverlay",
+      title: "Background Overlay Settings",
+      type: "object",
+      fields: [
         {
           name: "overlayType",
           title: "Overlay Type",
@@ -318,12 +318,14 @@ export default {
     select: {
       title: "title",
       subtitle: "seo.metaTitle",
+      media: "backgroundImage",
     },
     prepare(selection) {
-      const { title, subtitle } = selection
+      const { title, subtitle, media } = selection
       return {
         title: title,
         subtitle: subtitle ? `SEO: ${subtitle}` : "No SEO title set",
+        media: media,
       }
     },
   },
