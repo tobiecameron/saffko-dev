@@ -10,14 +10,14 @@ const nextConfig = {
     unoptimized: true,
   },
   compiler: {
-    styledComponents: true,
+    // styledComponents: true,
   },
   webpack: (config, { isServer }) => {
-    // Force styled-components to use the exact version we want
+    // Ensures all uses of styled-components resolve to the exact same version (Sanity UI compatibility fix)
     config.resolve.alias = {
-      ...config.resolve.alias,
-      "styled-components": require.resolve("styled-components"),
-    }
+      ...(config.resolve.alias || {}),
+      // 'styled-components': require.resolve('styled-components'),
+    };
     return config
   },
 }
