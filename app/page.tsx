@@ -82,10 +82,10 @@ export default async function Home() {
               objectFit: "cover",
             }}
             priority
-            className="opacity-90"
+            className="opacity-95"
           />
           {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/20" />
         </div>
       )}
 
