@@ -1,17 +1,15 @@
-import { defineType, defineField } from "sanity"
-
-export default defineType({
+export default {
   name: "homePage",
   title: "Home Page",
   type: "document",
   fields: [
-    defineField({
+    {
       name: "title",
       title: "Page Title",
       type: "string",
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
+    },
+    {
       name: "backgroundImage",
       title: "Background Image",
       type: "image",
@@ -27,8 +25,8 @@ export default defineType({
           description: "Important for SEO and accessibility.",
         },
       ],
-    }),
-    defineField({
+    },
+    {
       name: "heroSection",
       title: "Hero Section",
       type: "object",
@@ -44,8 +42,8 @@ export default defineType({
           type: "text",
         },
       ],
-    }),
-    defineField({
+    },
+    {
       name: "contentSections",
       title: "Content Sections",
       type: "array",
@@ -189,11 +187,11 @@ export default defineType({
           ],
         },
       ],
-    }),
+    },
   ],
   preview: {
     select: {
       title: "title",
     },
   },
-})
+}
