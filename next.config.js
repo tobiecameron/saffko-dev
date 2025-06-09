@@ -12,7 +12,14 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-  transpilePackages: ["@sanity/ui", "@sanity/visual-editing"],
+  webpack: (config, { isServer }) => {
+    // Force styled-components to use the exact version we want
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "styled-components": require.resolve("styled-components"),
+    }
+    return config
+  },
 }
 
 module.exports = nextConfig
