@@ -1,3 +1,4 @@
+//layout.tsx
 import type React from "react"
 import "./globals.css"
 import "./tailwind-fix.css"
